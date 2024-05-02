@@ -3,19 +3,22 @@ import styles from "./styles.module.scss";
 import { CellularAutomaton } from "./CellularAutomaton";
 
 function App() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const handlerRef = useRef<CellularAutomaton | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
 
     if (canvas) {
-      const cellularAutomaton = new CellularAutomaton(canvas);
+      const handler = new CellularAutomaton(canvas);
+      handlerRef.current = handler;
 
       return () => {
-        cellularAutomaton.dispose();
+        handler.dispose();
+        handlerRef.current = null;
       };
     }
-  });
+  }, []);
 
   return (
     <>
